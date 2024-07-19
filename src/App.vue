@@ -6,8 +6,10 @@ import Formulario from './components/Formulario.vue'
 
 <template>
     <Header/>
-    <div class="mt-12 md:flex">
-        <Formulario/>
+    <div class="container mx-auto">
+        <div class="mt-12 md:flex">
+            <Formulario/>
+        </div>
     </div>
 </template>
 
