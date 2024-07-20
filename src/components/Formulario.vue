@@ -21,16 +21,26 @@ const validar = () => {
     if(Object.values(props).includes('')) {
         alerta.mensaje = 'Todos los campos son obligatorios'
         alerta.tipo = 'error'
-        return alerta
+        limpiarAlerta()
+        return 
     }
 
     emit('guardar-paciente')
     alerta.mensaje = 'Paciente registrado con exito'
-    alerta.tipo = 'correcto'
-    return alerta
+    alerta.tipo = 'exito'
+
+    limpiarAlerta()
 }
 
-
+const limpiarAlerta = () => {
+    setTimeout(() => {
+        Object.assign(alerta, {
+            tipo: '',
+            mensaje: '',
+        })
+        
+    }, 3000)
+}
 
 const props = defineProps({
     nombre: {
