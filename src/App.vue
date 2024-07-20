@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { uid } from 'uid'
 import Header from './components/Header.vue'
 import Formulario from './components/Formulario.vue'
@@ -16,6 +16,21 @@ const paciente = reactive({
     alta: '',
     sintomas: '',
 })
+
+watch(pacientes, () => {
+    guardarStorage()
+}, { deep: true })
+
+onMounted(() => {
+    const pacientesLS = JSON.parse(localStorage.getItem('pacientes')) ?? []
+    if (pacientesLS.length > 0) {
+        pacientes.value = pacientesLS
+    }
+})
+
+const guardarStorage = () => {
+    localStorage.setItem('pacientes', JSON.stringify(pacientes.value))
+}
 
 const guardarPaciente = () => {
 
