@@ -18,10 +18,18 @@ const paciente = reactive({
 })
 
 const guardarPaciente = () => {
-    pacientes.value.push({
-        ...paciente,
-        id: uid(),
-    })
+
+    if(paciente.id) {
+        const index = pacientes.value.findIndex(pacienteState => pacienteState.id === paciente.id)
+
+        pacientes.value[index] = {...paciente}
+
+    } else {
+        pacientes.value.push({
+            ...paciente,
+            id: uid(),
+        })
+    }
 
     //Limpiar formulario
     Object.assign(paciente, {
@@ -30,7 +38,18 @@ const guardarPaciente = () => {
         email: '',
         alta: '',
         sintomas: '',
+        id: null
     })
+}
+
+const actualizarPaciente = (id) => {
+    const pacienteEditar = pacientes.value.filter(paciente => paciente.id === id) [0]
+    Object.assign(paciente, pacienteEditar)
+}
+
+const eliminarPaciente = (id) => {
+    const pacientesFiltrados = pacientes.value.filter(paciente => paciente.id !== id)
+    pacientes.value = pacientesFiltrados
 }
 
 </script>
@@ -46,6 +65,7 @@ const guardarPaciente = () => {
                 v-model:alta="paciente.alta"
                 v-model:sintomas="paciente.sintomas"
                 @guardar-paciente="guardarPaciente"
+                :id="paciente.id"
             />
 
             <div class="md:w-1/2 md:h-screen overflow-y-scroll">
@@ -60,6 +80,8 @@ const guardarPaciente = () => {
                         v-for="paciente in pacientes"
                         :key="paciente.id"
                         :paciente="paciente"
+                        @actualizar-paciente="actualizarPaciente"
+                        @eliminar-paciente="eliminarPaciente"
                     />
 
                 </div>
